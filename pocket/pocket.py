@@ -7,10 +7,16 @@ from config import (
     request_token_url,
     redirect_uri,
     pocket_url,
+    authorize_url,
 )
 
 
+request_token = None
+access_token = None
+
+
 def get_request_token():
+    global request_token
     headers = {
         'Content-Type': 'application/x-www-form-urlencoded',
         'charset': 'UTF-8',
@@ -27,14 +33,35 @@ def get_request_token():
     )
 
     if response.content:
-        return response.content.split('=')[1]
+        request_token = response.content.split('=')[1]
 
     raise Exception('get token error!')
 
 
-def redirect_to_pocket(request_token):
+def redirect_to_pocket():
     url = pocket_url + '?'
-    url += 'request_token=' + request_token
+    url += 'request_token=' + str(request_token)
     url += 'redirect_uri=' + redirect_uri
     return url
 
+
+def get_access_token():
+    global access_token
+    headers = {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        'charset': 'UTF-8',
+        'X-Accept': 'application/x-www-form-urlencoded',
+    }
+    data = {
+        'consumer_key': customer_key,
+        'request_token': request_token,
+    }
+
+    response = requests.post(
+        authorize_url,
+        headers=headers,
+        data=data,
+    )
+
+    print response.content
+    return response.content

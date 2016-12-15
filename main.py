@@ -3,6 +3,8 @@
 from pocket.pocket import (
     pocket_url,
     get_request_token,
+    request_token,
+    get_access_token,
 )
 
 from flask import Flask, redirect
@@ -16,13 +18,14 @@ def index():
 
 @app.route('/go/pocket')
 def go_pocket():
-    request_token = get_request_token()
+    get_request_token()
     redirect(pocket_url(request_token))
 
 
 @app.route("/home")
 def home():
-    return "Hello World!"
+    content = get_request_token()
+    return content
 
 if __name__ == "__main__":
     app.run(port=80)
