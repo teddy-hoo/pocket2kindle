@@ -38,5 +38,3 @@ def redirect_to_pocket(request_token):
     url += 'redirect_uri=' + redirect_uri
     return url
 
-if __name__ == '__main__':
-    print get_request_token()
