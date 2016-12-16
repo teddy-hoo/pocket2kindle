@@ -35,12 +35,10 @@ def get_request_token():
     if response.content:
         request_token = response.content.split('=')[1]
 
-    raise Exception('get token error!')
-
 
 def redirect_to_pocket():
-    url = pocket_url + '?'
-    url += 'request_token=' + str(request_token)
+    url = pocket_url
+    url += 'request_token=' + str(request_token) + '&'
     url += 'redirect_uri=' + redirect_uri
     return url
 
@@ -54,7 +52,7 @@ def get_access_token():
     }
     data = {
         'consumer_key': customer_key,
-        'request_token': request_token,
+        'code': request_token,
     }
 
     response = requests.post(
