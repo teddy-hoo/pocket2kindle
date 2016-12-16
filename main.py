@@ -3,6 +3,7 @@
 
 from app import app
 from mysql import MySQLClient
+import routes
 MySQLClient.set_app(app)
 
 
